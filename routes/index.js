@@ -4,12 +4,23 @@ const router = new KoaRouter();
 const homePage = require('../controllers/homepage');
 const loginPage = require('../controllers/login');
 const adminPage = require('../controllers/adminpage');
+const fs = require('fs');
+const path = require('path');
 
 async function isAdmin(ctx, next) {
   if (ctx.session.isAdmin) {
     return await next();
   }
   ctx.redirect('/');
+}
+
+async function isExist(ctx, next) {
+  let upload = path.join('./public', 'uploads');
+  if (!fs.existsSync(upload)) {
+    fs.mkdirSync(upload);
+    return await next();
+  }
+  ctx.redirect('/admin');
 }
 
 router.get('/', homePage.getIndex);
@@ -22,6 +33,7 @@ router.post('/admin/skills', isAdmin, koaBody(), adminPage.setSkills);
 router.post(
   '/admin/upload',
   isAdmin,
+  isExist,
   koaBody({
     multipart: true,
     formidable: {
