@@ -5,10 +5,31 @@ const homePage = require('../controllers/homepage');
 const loginPage = require('../controllers/login');
 const adminPage = require('../controllers/adminpage');
 
+async function isAdmin(ctx, next) {
+  if (ctx.session.isAdmin) {
+    return await next();
+  }
+  ctx.redirect('/');
+}
+
 router.get('/', homePage.getIndex);
 
 router.get('/login', loginPage.getLogin);
-router.get('/admin', adminPage.getAdmin);
+router.post('/login', koaBody(), loginPage.login);
+
+router.get('/admin', isAdmin, adminPage.getAdmin);
+router.post('/admin/skills', isAdmin, koaBody(), adminPage.setSkills);
+router.post(
+  '/admin/upload',
+  isAdmin,
+  koaBody({
+    multipart: true,
+    formidable: {
+      uploadDir: './public/uploads'
+    }
+  }),
+  adminPage.setProduct
+);
 
 router.post('/', koaBody(), homePage.sendEmail);
 module.exports = router;

@@ -1,23 +1,27 @@
 {
+  "admin": {
+    "login": "qq@example.com",
+    "password": "root"
+  },
   "skills": [
     {
       "name": "age",
-      "number": 15,
+      "number": "2",
       "text": "Возраст начала занятий на скрипке"
     },
     {
       "name": "concerts",
-      "number": 13,
+      "number": "3",
       "text": "Концертов отыграл"
     },
     {
       "name": "cities",
-      "number": 10,
+      "number": "4",
       "text": "Максимальное число городов в туре"
     },
     {
       "name": "years",
-      "number": 4,
+      "number": "3",
       "text": "Лет на сцене в качестве скрипача"
     }
   ],
